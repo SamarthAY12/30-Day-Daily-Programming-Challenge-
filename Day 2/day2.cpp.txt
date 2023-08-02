@@ -1,0 +1,41 @@
+#include <iostream>
+
+int countOccurrences(int arr[], int n, int x) {
+    int count = 0;
+
+    // Binary search to find the first occurrence of x
+    int left = 0;
+    int right = n - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == x) {
+            // If x is found, check its left side for more occurrences
+            count++;
+            int prev = mid - 1;
+            while (prev >= 0 && arr[prev] == x) {
+                count++;
+                prev--;
+            }
+            break;
+        } else if (arr[mid] < x) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return count;
+}
+
+int main() {
+    int arr[] = {0, 1, 1, 0, 2, 3, 4};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int x = 1;
+
+    int occurrences = countOccurrences(arr, n, x);
+    std::cout << "Occurrences of " << x << " in the array: " << occurrences << std::endl;
+
+    return 0;
+}
