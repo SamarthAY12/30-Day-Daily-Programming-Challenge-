@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+
+std::vector<int> findSubarrayWithSum(const std::vector<int>& arr, int sum) {
+    int n = arr.size();
+    int left = 0, right = 0;
+    int currentSum = arr[0];
+
+    while (right < n && left <= right) {
+        if (currentSum == sum) {
+            // Subarray found, return it
+            std::vector<int> subarray(arr.begin() + left, arr.begin() + right + 1);
+            return subarray;
+        } else if (currentSum < sum) {
+            // Expand the window to the right
+            right++;
+            if (right < n)
+                currentSum += arr[right];
+        } else {
+            // Shrink the window from the left
+            currentSum -= arr[left];
+            left++;
+        }
+    }
+
+    // If no subarray is found, return an empty vector
+    return std::vector<int>();
+}
+
+int main() {
+    std::vector<int> arr = {1, 4, 7, 3, 9, 8};
+    int sum = 11;
+
+    std::vector<int> subarray = findSubarrayWithSum(arr, sum);
+
+    if (!subarray.empty()) {
+        std::cout << "Subarray with sum " << sum << ": [";
+        for (size_t i = 0; i < subarray.size(); ++i) {
+            std::cout << subarray[i];
+            if (i != subarray.size() - 1) {
+                std::cout << ", ";
+            }
+        }
+        std::cout << "]" << std::endl;
+    } else {
+        std::cout << "No subarray found with sum " << sum << std::endl;
+    }
+
+    return 0;
+}
